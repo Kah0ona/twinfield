@@ -150,7 +150,7 @@ class OAuth
                 exit;
             } else {
                 //we use an exception to break out of the flow and present a redirect url.
-                throw new ShouldRedirectException($this->getRedirectURL());
+                throw new \Pronamic\Twinfield\Secure\Exception\ShouldRedirectException($this->getRedirectURL());
             }
         }
     }
