@@ -191,6 +191,7 @@ class CustomerFactory extends ParentFactory
      */
     public function send(Customer $customer)
     {
+
         // Attempts the process login
         if ($this->getLogin()->process()) {
             

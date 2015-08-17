@@ -34,7 +34,7 @@ interface IOAuthCredentialsStore {
      *
      * @post a subsequent call to loadSession() and then getSession() retrieves what is persisted
      */
-    public function saveSession($data);
+    public function saveSession(array $data);
 
 }
 ?>

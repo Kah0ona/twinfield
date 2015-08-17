@@ -148,6 +148,9 @@ class OAuth
             if ($this->autoRedirect) {
                 print $this->getRedirectScript();
                 exit;
+            } else {
+                //we use an exception to break out of the flow and present a redirect url.
+                throw new ShouldRedirectException($this->getRedirectURL());
             }
         }
     }
@@ -190,6 +193,6 @@ class OAuth
             $this->autoRedirect = true;
         }
 
-        $this->initialize();
+//        $this->initialize();
     }
 }
