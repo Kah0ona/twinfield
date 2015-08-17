@@ -5,3 +5,7 @@
 # Grunt #
 #########
 /node_modules
+
+
+*.swp
+*.swo

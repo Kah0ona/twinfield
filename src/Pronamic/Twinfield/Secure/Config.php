@@ -63,6 +63,9 @@ class Config
      */
     private $soapClientOptions = array();
 
+    public function getOAuthCredentials() {
+        return $this->oauthCredentials;
+    }       
     /**
      * Sets the oAuth details for this config object.
      *
@@ -100,7 +103,7 @@ class Config
      */
     public function getOAuthParameters()
     {
-        $this->oauth = new OAuth($this->oauthCredentials);
+        $this->oauth = new OAuth($this->oauthCredentials, new SessionOAuthCredentialsStore());
         return $this->oauth->getParameters();
     }
     /**

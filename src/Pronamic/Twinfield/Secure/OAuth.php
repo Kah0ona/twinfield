@@ -10,45 +10,35 @@ namespace Pronamic\Twinfield\Secure;
  * @version 0.0.2
  */
 
-class OAuth
+class OAuth 
 {
     private $initiationURL = 'https://login.twinfield.com/oauth/initiate.aspx';
     private $authenticationURL = "https://login.twinfield.com/oauth/login.aspx?oauth_token=%s";
     private $finalizationURL = 'https://login.twinfield.com/oauth/finalize.aspx';
-    private $sessionName = 'PronamicTwinfieldOauthSession';
     private $temp_token = '';
     private $needToRedirect = true;
     private $autoRedirect = false;
     private $session=array();
+    private $credentialsStore;
     private $options;
 
     private function loadSession()
     {
-        if (isset($GLOBALS['_SESSION'][$this->sessionName])) {
-            $this->session = @unserialize($GLOBALS['_SESSION'][$this->sessionName]);
-        } else {
-            $this->initSession();
-        }
+        $this->session = $this->credentialsStore->loadSession();
     }
 
     private function initSession()
     {
-        $this->session = array(
-            'temp_token_secret' => null,
-            'accessToken' => null,
-            'accessSecret' => null,
-        );
+        $this->session = $this->credentialsStore->initSession();
     }
     private function saveSession()
     {
-
-        $GLOBALS['_SESSION'][$this->sessionName] = serialize($this->session);
+        $this->credentialsStore->saveSession($this->session);
     }
 
     private function clearSession()
     {
-        setcookie($this->sessionName, null, -1, '/');
-        $this->initSession();
+        $this->session = $this->initSession();
     }
 
     private function getTempTokens()
@@ -172,8 +162,9 @@ class OAuth
         );
     }
 
-    public function __construct($options)
+    public function __construct($options, IOAuthCredentialsStore $credsStore)
     {
+        $this->credentialsStore = $credsStore;
         $this->options = $options;
         if (!function_exists('curl_version')){
             trigger_error("curl not installed", E_USER_ERROR);
@@ -198,6 +189,7 @@ class OAuth
         if (array_key_exists('autoRedirect', $options) && $options['autoRedirect'] == true) {
             $this->autoRedirect = true;
         }
+
         $this->initialize();
     }
 }
