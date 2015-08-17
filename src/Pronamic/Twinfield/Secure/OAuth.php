@@ -193,6 +193,6 @@ class OAuth
             $this->autoRedirect = true;
         }
 
-//        $this->initialize();
+        $this->initialize();
     }
 }

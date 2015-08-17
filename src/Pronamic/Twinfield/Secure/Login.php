@@ -104,6 +104,7 @@ class Login
         // Process logon
         if ($this->config->getClientToken() != '') {
             
+            //this->config->getCredentials() instantiates the oAuth dance
             $response = $this->soapLoginClient->OAuthLogon($this->config->getCredentials());
             $result = $response->OAuthLogonResult;
         } else {
