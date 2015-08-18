@@ -158,9 +158,9 @@ class OAuth
     public function getParameters()
     {
         return array(
-            'clientToken' => $this->options['clientToken'],
+            'clientToken'  => $this->options['clientToken'],
             'clientSecret' => $this->options['clientSecret'],
-            'accessToken' => $this->session['accessToken'],
+            'accessToken'  => $this->session['accessToken'],
             'accessSecret' => $this->session['accessSecret']
         );
     }
