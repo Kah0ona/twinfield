@@ -96,6 +96,20 @@ class Service
         return new Response($this->response);
     }
 
+
+    public function sendXml(string $xml) {
+        // Get the secureclient and send this documents xml
+        $this->result = $this->login->getClient()->ProcessXmlString(
+            array('xmlRequest' => $xml)
+        );
+
+        // Make a new DOMDocument, and load the response into it
+        $this->response = new \DOMDocument();
+        $this->response->loadXML($this->result->ProcessXmlStringResult);
+
+        return new Response($this->response);
+    }
+
     /**
      * Returns the DOMDocument response from the latest
      * send
