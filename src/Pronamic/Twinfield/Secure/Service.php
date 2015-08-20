@@ -97,7 +97,7 @@ class Service
     }
 
 
-    public function sendXml(string $xml) {
+    public function sendXml($xml) {
         // Get the secureclient and send this documents xml
         $this->result = $this->login->getClient()->ProcessXmlString(
             array('xmlRequest' => $xml)
