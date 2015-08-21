@@ -32,6 +32,7 @@ class Response
 
     public function __construct(\DOMDocument $responseDocument)
     {
+
         $this->responseDocument = $responseDocument;
     }
 
@@ -78,7 +79,16 @@ class Response
 
         $rowNodes = $xpath->query('//*[@msgtype="'.$type.'"]');
         foreach ($rowNodes as $rowNode) {
-            $errors[] = $rowNode->getAttribute('msg');
+            $trace = array();
+            while($rowNode->parentNode != null) {
+                $trace[] = $rowNode->tagName;
+            }
+            $trace = array_reverse($trace);
+            $t = '';
+            foreach($trace as $tr) {
+                $t .= $tr . '>';
+            }
+            $errors[] = $t . ' ' . $rowNode->tagName.': '.$rowNode->getAttribute('msg');
         }
 
         return $errors;
