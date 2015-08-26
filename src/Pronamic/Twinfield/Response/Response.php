@@ -94,19 +94,7 @@ class Response
             foreach($trace as $tr) {
                 $t .= $tr . '> ';
             }
-            //find the invoice number 
-
-            $p = $rowNode;
-            $invNum = '';
-            while($p->parentNode != null) {
-                $p = $p->parentNode;
-                if($p->tagName == 'transaction') {
-                    $invNum = $p->getElementsByTagName('invoicenumber')->item(0)->nodeValue;
-                    break;
-                }
-            }
-
-            $errors[$invNum][] = $rowNode->getAttribute('msg');
+            $errors[] = $rowNode->getAttribute('msg');
         }
 
         return $errors;
