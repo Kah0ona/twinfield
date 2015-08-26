@@ -80,15 +80,33 @@ class Response
         $rowNodes = $xpath->query('//*[@msgtype="'.$type.'"]');
         foreach ($rowNodes as $rowNode) {
             $trace = array();
-            while($rowNode->parentNode != null) {
-                $trace[] = $rowNode->tagName;
+
+            $p = $rowNode;
+            while($p->parentNode != null) {
+                $p = $p->parentNode;
+
+                if(isset($p->tagName)) {
+                    $trace[] = $p->tagName;
+                }
             }
             $trace = array_reverse($trace);
             $t = '';
             foreach($trace as $tr) {
-                $t .= $tr . '>';
+                $t .= $tr . '> ';
             }
-            $errors[] = $t . ' ' . $rowNode->tagName.': '.$rowNode->getAttribute('msg');
+            //find the invoice number 
+
+            $p = $rowNode;
+            $invNum = '';
+            while($p->parentNode != null) {
+                $p = $p->parentNode;
+                if($p->tagName == 'transaction') {
+                    $invNum = $p->getElementsByTagName('invoicenumber')->item(0)->nodeValue;
+                    break;
+                }
+            }
+
+            $errors[$invNum][] = $rowNode->getAttribute('msg');
         }
 
         return $errors;
